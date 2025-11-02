@@ -45,6 +45,7 @@ Browse the [skills catalog](.claude/skills/) and copy what you need.
 
 **Available:**
 - **backend-dev-guidelines** - Node.js/Express/TypeScript patterns
+- **backend-dev-guidelines-go-fiber** - Go/Fiber/database/sql patterns
 - **frontend-dev-guidelines** - React/TypeScript/MUI v7 patterns
 - **skill-developer** - Meta-skill for creating skills
 - **route-tester** - Test authenticated API routes
@@ -111,10 +112,11 @@ skill-name/
 
 ```
 .claude/
-├── skills/                 # 5 production skills
-│   ├── backend-dev-guidelines/  (12 resource files)
-│   ├── frontend-dev-guidelines/ (11 resource files)
-│   ├── skill-developer/         (7 resource files)
+├── skills/                 # 6 production skills
+│   ├── backend-dev-guidelines/         (12 resource files - Node.js)
+│   ├── backend-dev-guidelines-go-fiber/ (11 resource files - Go/Fiber)
+│   ├── frontend-dev-guidelines/        (11 resource files)
+│   ├── skill-developer/                (7 resource files)
 │   ├── route-tester/
 │   ├── error-tracking/
 │   └── skill-rules.json    # Skill activation configuration
@@ -141,12 +143,13 @@ dev/
 
 ## Component Catalog
 
-### 🎨 Skills (5)
+### 🎨 Skills (6)
 
 | Skill | Lines | Purpose | Best For |
 |-------|-------|---------|----------|
 | [**skill-developer**](.claude/skills/skill-developer/) | 426 | Creating and managing skills | Meta-development |
-| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Backend APIs |
+| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Node.js Backend APIs |
+| [**backend-dev-guidelines-go-fiber**](.claude/skills/backend-dev-guidelines-go-fiber/) | 347 | Go/Fiber/database/sql patterns | Go Backend APIs |
 | [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React frontends |
 | [**route-tester**](.claude/skills/route-tester/) | 389 | Testing authenticated routes | API testing |
 | [**error-tracking**](.claude/skills/error-tracking/) | ~250 | Sentry integration | Error monitoring |
@@ -325,6 +328,68 @@ When helping users integrate:
 ✅ Dev docs preserve knowledge across resets
 ✅ Consistent patterns via guardrails
 ✅ Agents streamline complex tasks
+
+---
+
+## Real-World Integrations
+
+This infrastructure has been successfully deployed to production projects with different tech stacks, demonstrating its adaptability.
+
+### 🎮 cards-against-humanity (Heavy Integration)
+**Stack:** Express + Socket.IO + Redis + React
+**Integration Level:** Heavy customization
+**Time:** ~90 minutes
+
+**What was integrated:**
+- 8 general-purpose agents
+- 2 **custom skills** built from scratch (realtime-game-backend, realtime-game-frontend)
+- 5 **custom slash commands** (/test-socket, /test-route, /debug-connection, /review-realtime, /sync-infrastructure)
+- 4 Claude hooks (auto-activation)
+- 5 git hooks (CI/CD quality gates)
+
+**Custom content created:**
+- 9 resource files for backend real-time patterns (Socket.IO, Redis pipelines, session management)
+- 5 resource files for frontend real-time patterns (Socket.IO client, React state management)
+- Complete testing and debugging guides for real-time applications
+
+**Why heavy:** Specialized real-time multiplayer stack needed custom patterns not covered by generic skills.
+
+**Results:** Full production-ready infrastructure with automated quality checks and real-time development patterns.
+
+### 🌐 orbit (Light Integration)
+**Stack:** Next.js 15 + Prisma + Redis + Socket.IO + JWT
+**Integration Level:** Light customization
+**Time:** ~15 minutes
+
+**What was integrated:**
+- 10 general-purpose agents (including auth-specific ones)
+- 2 **generic skills** from showcase (backend-dev-guidelines, frontend-dev-guidelines)
+- 0 custom commands (not needed)
+- 4 Claude hooks (auto-activation)
+- 5 git hooks (CI/CD quality gates)
+
+**Customization:**
+- Adapted skill-rules.json for Next.js structure (src/app/api/, src/components/)
+- No custom skills needed - generic patterns worked perfectly
+
+**Why light:** Standard Next.js stack fits well with showcase's generic skills.
+
+**Results:** Production-ready infrastructure in 15 minutes with zero custom content creation.
+
+### Integration Comparison
+
+| Aspect | Cards-Against-Humanity | Orbit |
+|--------|------------------------|-------|
+| **Customization** | Heavy | Light |
+| **Time Investment** | ~90 minutes | ~15 minutes |
+| **Custom Skills** | 2 (fully custom) | 0 (used generic) |
+| **Custom Commands** | 5 | 0 |
+| **Resource Files** | 14 (custom) | 0 (used generic) |
+| **Best For** | Specialized stacks | Standard frameworks |
+
+**Takeaway:** The infrastructure scales from quick 15-minute integrations to comprehensive 90-minute custom setups, depending on your stack's uniqueness.
+
+**See:** [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) for step-by-step instructions and [INTEGRATION_REGISTRY.json](INTEGRATION_REGISTRY.json) for detailed component tracking.
 
 ---
 

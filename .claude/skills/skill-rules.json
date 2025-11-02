@@ -84,6 +84,59 @@
                 ]
             }
         },
+        "backend-dev-guidelines-go-fiber": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Backend development patterns for Go/Fiber HTTP APIs",
+            "promptTriggers": {
+                "keywords": [
+                    "go",
+                    "golang",
+                    "fiber",
+                    "go backend",
+                    "go API",
+                    "go handler",
+                    "go route",
+                    "go service",
+                    "go middleware",
+                    "fiber handler",
+                    "fiber route",
+                    "fiber middleware"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(go|golang).*?(route|endpoint|API|handler|service)",
+                    "(create|add|implement|build).*?(fiber).*?(route|handler|middleware)",
+                    "(fix|handle|debug).*?(go|golang|fiber)",
+                    "(how to|best practice).*?(go|golang|fiber)"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "api/**/*.go",
+                    "server/**/*.go",
+                    "backend/**/*.go",
+                    "services/**/*.go",
+                    "routes/**/*.go",
+                    "handlers/**/*.go",
+                    "middleware/**/*.go"
+                ],
+                "pathExclusions": [
+                    "**/*_test.go",
+                    "**/vendor/**"
+                ],
+                "contentPatterns": [
+                    "fiber\\.Ctx",
+                    "fiber\\.App",
+                    "app\\.Get\\(",
+                    "app\\.Post\\(",
+                    "app\\.Put\\(",
+                    "app\\.Delete\\(",
+                    "func.*\\*fiber\\.Ctx",
+                    "fiber\\.New\\("
+                ]
+            }
+        },
         "frontend-dev-guidelines": {
             "type": "guardrail",
             "enforcement": "block",
