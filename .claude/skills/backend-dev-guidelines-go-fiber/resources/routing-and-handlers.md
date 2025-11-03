@@ -10,7 +10,7 @@ app := fiber.New()
 
 // Simple routes
 app.Get("/health", handleHealth)
-app.Post("/optimize", handleCreateUser)
+app.Post("/users", handleCreateUser)
 app.Delete("/api/keys/:id", handleDeleteKey)
 
 // Route groups
@@ -31,9 +31,9 @@ admin.Post("/config", handleUpdateConfig)
 // routes/users.go
 package routes
 
-func RegisterOptimizeRoutes(app *fiber.App) {
-    app.Post("/optimize", handleCreateUser)
-    app.Post("/batch-optimize", handleBatchCreateUsers)
+func RegisterUserRoutes(app *fiber.App) {
+    app.Post("/users", handleCreateUser)
+    app.Post("/batch-users", handleBatchCreateUsers)
 }
 
 // routes/api_keys.go
@@ -44,7 +44,7 @@ func RegisterAPIKeyRoutes(app *fiber.App) {
 }
 
 // main.go
-routes.RegisterOptimizeRoutes(app)
+routes.RegisterUserRoutes(app)
 routes.RegisterAPIKeyRoutes(app)
 ```
 
@@ -98,13 +98,13 @@ func handleCreateUser(c *fiber.Ctx) error {
     }
 
     // 4. Call service layer
-    result, err := services.CreateUser(imgData, services.OptimizeOptions{
+    result, err := services.CreateUser(imgData, services.UserOptions{
         Quality: quality,
     })
     if err != nil {
-        log.Printf("Error optimizing image: %v", err)
+        log.Printf("Error processing request: %v", err)
         return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-            "error": "Failed to process image",
+            "error": "Failed to process request",
         })
     }
 
@@ -422,13 +422,13 @@ func handleRequest(c *fiber.Ctx) error {
 type HandlerDependencies struct {
     DB      *sql.DB
     Config  *Config
-    Service *ImageService
+    Service *UserService
 }
 
-func NewOptimizeHandler(deps *HandlerDependencies) fiber.Handler {
+func NewUserHandler(deps *HandlerDependencies) fiber.Handler {
     return func(c *fiber.Ctx) error {
         // Access dependencies via closure
-        result, err := deps.Service.Optimize(imageData)
+        result, err := deps.Service.ProcessUser(userData)
         if err != nil {
             return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
                 "error": "Processing failed",
@@ -442,9 +442,9 @@ func NewOptimizeHandler(deps *HandlerDependencies) fiber.Handler {
 deps := &HandlerDependencies{
     DB:      db,
     Config:  config,
-    Service: imageService,
+    Service: userService,
 }
-app.Post("/optimize", NewOptimizeHandler(deps))
+app.Post("/users", NewUserHandler(deps))
 ```
 
 ---
@@ -478,12 +478,12 @@ func handleStream(c *fiber.Ctx) error {
 ### HTTP Test Pattern
 
 ```go
-func TestHandleOptimize(t *testing.T) {
+func TestHandleCreateUser(t *testing.T) {
     app := fiber.New()
-    app.Post("/optimize", handleCreateUser)
+    app.Post("/users", handleCreateUser)
 
     // Create test request
-    req := httptest.NewRequest("POST", "/optimize", nil)
+    req := httptest.NewRequest("POST", "/users", nil)
     req.Header.Set("Content-Type", "multipart/form-data")
 
     // Execute request

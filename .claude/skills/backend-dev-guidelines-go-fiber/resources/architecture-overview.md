@@ -72,7 +72,7 @@ api/
 │   └── api_keys.go        # API key management
 │
 ├── services/              # Business logic
-│   ├── user_service.go   # Image processing logic
+│   ├── user_service.go   # User management logic
 │   └── auth_service.go    # Authentication logic
 │
 ├── middleware/            # HTTP middleware
@@ -104,7 +104,7 @@ api/
 ### 1. Request Arrives
 
 ```go
-// Incoming HTTP request to POST /optimize
+// Incoming HTTP request to POST /users
 ```
 
 ### 2. Middleware Chain Executes
@@ -121,7 +121,7 @@ app.Use(middleware.NewMetricsCollector()) // Collect metrics
 
 ```go
 // routes/users.go
-app.Post("/optimize", handleCreateUser)
+app.Post("/users", handleCreateUser)
 ```
 
 ### 4. Handler Processes Request
@@ -139,11 +139,11 @@ func handleCreateUser(c *fiber.Ctx) error {
     }
 
     // 3. Call service layer
-    result, err := services.CreateUser(imageData, options)
+    result, err := services.CreateUser(data, options)
     if err != nil {
         log.Printf("Error: %v", err)
         return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-            "error": "Failed to process image",
+            "error": "Failed to process request",
         })
     }
 
@@ -156,10 +156,10 @@ func handleCreateUser(c *fiber.Ctx) error {
 
 ```go
 // services/user_service.go
-func CreateUser(data []byte, opts OptimizeOptions) (*Result, error) {
+func CreateUser(data []byte, opts UserOptions) (*Result, error) {
     // Business logic here
-    // - Process image
-    // - Apply transformations
+    // - Process data
+    // - Apply business rules
     // - Generate result
     return &Result{...}, nil
 }

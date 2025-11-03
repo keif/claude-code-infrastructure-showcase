@@ -7,8 +7,8 @@
 ```go
 func TestCreateUser(t *testing.T) {
     // Setup
-    testData := loadTestImage()
-    options := OptimizeOptions{Quality: 80}
+    testData := loadTestData()
+    options := UserOptions{Quality: 80}
 
     // Execute
     result, err := CreateUser(testData, options)
@@ -18,9 +18,9 @@ func TestCreateUser(t *testing.T) {
         t.Fatalf("Expected no error, got: %v", err)
     }
 
-    if result.OptimizedSize >= result.OriginalSize {
+    if result.ProcessedSize >= result.OriginalSize {
         t.Errorf("Expected size reduction, got %d >= %d",
-            result.OptimizedSize, result.OriginalSize)
+            result.ProcessedSize, result.OriginalSize)
     }
 }
 ```
@@ -28,11 +28,11 @@ func TestCreateUser(t *testing.T) {
 ### HTTP Handler Testing
 
 ```go
-func TestHandleOptimize(t *testing.T) {
+func TestHandleCreateUser(t *testing.T) {
     app := fiber.New()
-    app.Post("/optimize", handleCreateUser)
+    app.Post("/users", handleCreateUser)
 
-    req := httptest.NewRequest("POST", "/optimize", nil)
+    req := httptest.NewRequest("POST", "/users", nil)
     resp, err := app.Test(req)
 
     if err != nil {

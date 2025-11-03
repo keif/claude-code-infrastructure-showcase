@@ -440,7 +440,7 @@ func setupCORS(app *fiber.App) {
 ```go
 // When executing external commands, NEVER use user input directly
 
-func optimizeWithExternalTool(inputBuffer []byte, level int) ([]byte, error) {
+func processWithExternalTool(inputBuffer []byte, level int) ([]byte, error) {
     // ✅ SAFE: Validate level is an integer in safe range
     if level < 0 || level > 6 {
         level = 2 // Safe default
